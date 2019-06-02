@@ -56,6 +56,48 @@ namespace LAB5OP
             return true;
         }
 
+        internal bool contains(Rectangle r)
+        {
+            for (int i = 0; i < DIMENSIONS; i++)
+            {
+                if (max[i] < r.max[i] || min[i] > r.min[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        internal float distance(Point p)
+        {
+            float distanceSquared = 0;
+            for (int i = 0; i < DIMENSIONS; i++)
+            {
+                float greatestMin = Math.Max(min[i], p.coordinates[i]);
+                float leastMax = Math.Min(max[i], p.coordinates[i]);
+                if (greatestMin > leastMax)
+                {
+                    distanceSquared += ((greatestMin - leastMax) * (greatestMin - leastMax));
+                }
+            }
+            return (float)Math.Sqrt(distanceSquared);
+        }
+
+        internal float enlargement(Rectangle r)
+        {
+            float enlargedArea = (Math.Max(max[0], r.max[0]) - Math.Min(min[0], r.min[0])) *
+                                 (Math.Max(max[1], r.max[1]) - Math.Min(min[1], r.min[1]));
+
+            return enlargedArea - area();
+        }
+
+
+        internal float area()
+        {
+            return (max[0] - min[0]) * (max[1] - min[1]);
+        }
+
+
         internal void add(Rectangle r)
         {
             for (int i = 0; i < DIMENSIONS; i++)
@@ -71,17 +113,33 @@ namespace LAB5OP
             }
         }
 
-        internal float area()
+        internal bool CompareArrays(float[] a1, float[] a2)
         {
-            return (max[0] - min[0]) * (max[1] - min[1]);
+            if ((a1 == null) || (a2 == null))
+                return false;
+            if (a1.Length != a2.Length)
+                return false;
+
+            for (int i = 0; i < a1.Length; i++)
+                if (a1[i] != a2[i])
+                    return false;
+            return true;
         }
 
-        internal float enlargement(Rectangle r)
+        public override bool Equals(object obj)
         {
-            float enlargedArea = (Math.Max(max[0], r.max[0]) - Math.Min(min[0], r.min[0])) *
-                                 (Math.Max(max[1], r.max[1]) - Math.Min(min[1], r.min[1]));
+            bool equals = false;
+            if (obj.GetType() == typeof(Rectangle))
+            {
+                Rectangle r = (Rectangle)obj;
 
-            return enlargedArea - area();
+                if (CompareArrays(r.min, min) && CompareArrays(r.max, max))
+                {
+                    equals = true;
+                }
+            }
+            return equals;
         }
+
     }
 }

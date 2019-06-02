@@ -125,10 +125,99 @@ namespace LAB5OP
             }
 
         }
+
+        public List<T> Nearest(Point p, float furthestDistance)
+        {
+            List<T> retval = new List<T>();
+            nearest(p, delegate (int id)
+            {
+                retval.Add(IdsToItems[id]);
+            }, furthestDistance);
+            return retval;
+        }
+
+
+        private void nearest(Point p, intproc v, float furthestDistance)
+        {
+            Node<T> rootNode = getNode(rootNodeId);
+
+            nearest(p, rootNode, furthestDistance);
+
+            foreach (int id in nearestIds)
+                v(id);
+            nearestIds.Clear();
+        }
+
+        public List<T> Contains(Rectangle r)
+        {
+            List<T> retval = new List<T>();
+            contains(r, delegate (int id)
+            {
+                retval.Add(IdsToItems[id]);
+            });
+
+            return retval;
+        }
+
+        private void contains(Rectangle r, intproc v)
+        {
+            // find all rectangles in the tree that are contained by the passed rectangle
+            parents.Clear();
+            parents.Push(rootNodeId);
+
+            parentsEntry.Clear();
+            parentsEntry.Push(-1);
+
+            while (parents.Count > 0)
+            {
+                Node<T> n = getNode(parents.Peek());
+                int startIndex = parentsEntry.Peek() + 1;
+
+                if (!n.isLeaf())
+                {
+                    // go through every entry in the index Node<T> to check
+                    // if it intersects the passed rectangle. If so, it 
+                    // could contain entries that are contained.
+                    bool intersects = false;
+                    for (int i = startIndex; i < n.entryCount; i++)
+                    {
+                        if (r.intersects(n.entries[i]))
+                        {
+                            parents.Push(n.ids[i]);
+                            parentsEntry.Pop();
+                            parentsEntry.Push(i); // this becomes the start index when the child has been searched
+                            parentsEntry.Push(-1);
+                            intersects = true;
+                            break; // ie go to next iteration of while()
+                        }
+                    }
+                    if (intersects)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    // go through every entry in the leaf to check if 
+                    // it is contained by the passed rectangle
+                    for (int i = 0; i < n.entryCount; i++)
+                    {
+                        if (r.contains(n.entries[i]))
+                        {
+                            v(n.ids[i]);
+                        }
+                    }
+                }
+                parents.Pop();
+                parentsEntry.Pop();
+            }
+        }
+
         private int getNextNodeId()
         {
             return 1 + highestUsedNodeId++;
         }
+
 
         private Node<T> getNode(int index)
         {
@@ -175,6 +264,7 @@ namespace LAB5OP
                     }
                     break;
                 }
+
                 pickNext(n, newNode);
             }
 
@@ -189,6 +279,8 @@ namespace LAB5OP
             int highestLowIndex = 0;
             int lowestHighIndex = 0;
 
+            // for the purposes of picking seeds, take the MBR of the Node&lt;T&gt; to include
+            // the new rectangle aswell.
             n.mbr.add(newRect);
 
             for (int d = 0; d < Rectangle.DIMENSIONS; d++)
@@ -320,6 +412,55 @@ namespace LAB5OP
             return next;
         }
 
+        private float nearest(Point p, Node<T> n, float nearestDistance)
+        {
+            for (int i = 0; i < n.entryCount; i++)
+            {
+                float tempDistance = n.entries[i].distance(p);
+                if (n.isLeaf())
+                { // for leaves, the distance is an actual nearest distance 
+                    if (tempDistance < nearestDistance)
+                    {
+                        //nearestDistance = tempDistance;
+                        //nearestIds.Clear();
+                    }
+                    if (tempDistance <= nearestDistance)
+                    {
+                        nearestIds.Add(n.ids[i]);
+                    }
+                }
+                else
+                { // for index nodes, only go into them if they potentially could have
+                    // a rectangle nearer than actualNearest
+                    if (tempDistance <= nearestDistance)
+                    {
+                        // search the child node
+                        nearestDistance = nearest(p, getNode(n.ids[i]), nearestDistance);
+                    }
+                }
+            }
+            return nearestDistance;
+        }
+
+        private void intersects(Rectangle r, intproc v, Node<T> n)
+        {
+            for (int i = 0; i < n.entryCount; i++)
+            {
+                if (r.intersects(n.entries[i]))
+                {
+                    if (n.isLeaf())
+                    {
+                        v(n.ids[i]);
+                    }
+                    else
+                    {
+                        Node<T> childNode = getNode(n.ids[i]);
+                        intersects(r, v, childNode);
+                    }
+                }
+            }
+        }
+
         private Node<T> chooseNode(Rectangle r, int level)
         {
 
@@ -396,5 +537,14 @@ namespace LAB5OP
 
             return nn;
         }
+
+        public int Count
+        {
+            get
+            {
+                return this.msize;
+            }
+        }
+
     }
 }
