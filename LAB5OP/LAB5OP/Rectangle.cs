@@ -56,6 +56,20 @@ namespace LAB5OP
             return true;
         }
 
+        internal void add(Rectangle r)
+        {
+            for (int i = 0; i < DIMENSIONS; i++)
+            {
+                if (r.min[i] < min[i])
+                {
+                    min[i] = r.min[i];
+                }
+                if (r.max[i] > max[i])
+                {
+                    max[i] = r.max[i];
+                }
+            }
+        }
 
     }
 }
