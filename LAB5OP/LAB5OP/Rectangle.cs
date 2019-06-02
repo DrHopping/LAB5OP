@@ -38,5 +38,24 @@ namespace LAB5OP
             System.Array.Copy(min, 0, this.min, 0, DIMENSIONS);
             System.Array.Copy(max, 0, this.max, 0, DIMENSIONS);
         }
+
+        internal Rectangle copy()
+        {
+            return new Rectangle(min, max);
+        }
+
+        internal bool intersects(Rectangle r)
+        {
+            for (int i = 0; i < DIMENSIONS; i++)
+            {
+                if (max[i] < r.min[i] || min[i] > r.max[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
     }
 }
