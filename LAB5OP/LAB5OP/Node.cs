@@ -47,6 +47,15 @@
             }
         }
 
+        public Rectangle getEntry(int index)
+        {
+            if (index < entryCount)
+            {
+                return entries[index];
+            }
+            return null;
+        }
+
         internal void reorganize(RTree<T> rtree)
         {
             int countdownIndex = rtree.maxNodeEntries - 1;
@@ -64,5 +73,11 @@
                 }
             }
         }
+
+        internal bool isLeaf()
+        {
+            return (level == 1);
+        }
+
     }
 }

@@ -315,5 +315,42 @@ namespace LAB5OP
 
             return next;
         }
+
+        private Node<T> chooseNode(Rectangle r, int level)
+        {
+
+            Node<T> n = getNode(rootNodeId);
+            parents.Clear();
+            parentsEntry.Clear();
+
+            while (true)
+            {
+
+                if (n.level == level)
+                {
+                    return n;
+                }
+
+                float leastEnlargement = n.getEntry(0).enlargement(r);
+                int index = 0; // index of rectangle in subtree
+                for (int i = 1; i < n.entryCount; i++)
+                {
+                    Rectangle tempRectangle = n.getEntry(i);
+                    float tempEnlargement = tempRectangle.enlargement(r);
+                    if ((tempEnlargement < leastEnlargement) ||
+                        ((tempEnlargement == leastEnlargement) &&
+                         (tempRectangle.area() < n.getEntry(index).area())))
+                    {
+                        index = i;
+                        leastEnlargement = tempEnlargement;
+                    }
+                }
+
+                parents.Push(n.nodeId);
+                parentsEntry.Push(index);
+
+                n = getNode(n.ids[index]);
+            }
+        }
     }
 }
