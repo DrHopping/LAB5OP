@@ -18,14 +18,14 @@ namespace LAB5OP
         {
             return x * 180 / PIx;
         }
-        static public Tuple<float,float,float> CartesianToSpherical(float latitude,float longitude)
+        static public Point CartesianToSpherical(float latitude,float longitude)
         {
             latitude = (float)Radians(latitude);
             longitude = (float)Radians(longitude);
             var x = RADIUS * Math.Cos(latitude) * Math.Cos(longitude);
             var y = RADIUS * Math.Cos(latitude) * Math.Sin(longitude);
             var z = RADIUS * Math.Sin(latitude);
-            return new Tuple<float, float, float>((float)x, (float)y, (float)z);
+            return new Point((float)x, (float)y, (float)z);
         }
 
         static public Tuple<float,float> SphericalToCartesian(float x, float y, float z)
