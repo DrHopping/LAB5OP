@@ -352,5 +352,45 @@ namespace LAB5OP
                 n = getNode(n.ids[index]);
             }
         }
+
+        private Node<T> adjustTree(Node<T> n, Node<T> nn)
+        {
+            while (n.level != treeHeight)
+            {
+                Node<T> parent = getNode(parents.Pop());
+                int entry = parentsEntry.Pop();
+
+                if (!parent.entries[entry].Equals(n.mbr))
+                {
+                    parent.entries[entry].set(n.mbr.min, n.mbr.max);
+                    parent.mbr.set(parent.entries[0].min, parent.entries[0].max);
+                    for (int i = 1; i < parent.entryCount; i++)
+                    {
+                        parent.mbr.add(parent.entries[i]);
+                    }
+                }
+
+                Node<T> newNode = null;
+                if (nn != null)
+                {
+                    if (parent.entryCount < maxNodeEntries)
+                    {
+                        parent.addEntry(nn.mbr, nn.nodeId);
+                    }
+                    else
+                    {
+                        newNode = splitNode(parent, nn.mbr.copy(), nn.nodeId);
+                    }
+                }
+
+                n = parent;
+                nn = newNode;
+
+                parent = null;
+                newNode = null;
+            }
+
+            return nn;
+        }
     }
 }
