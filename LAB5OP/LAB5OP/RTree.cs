@@ -88,7 +88,16 @@ namespace LAB5OP
 
             add(r, id);
         }
+        public void Add(Point p, T item)
+        {
+            idcounter++;
+            int id = idcounter;
 
+            IdsToItems.Add(id, item);
+            ItemsToIds.Add(item, id);
+
+            add(new Rectangle(p.coordinates,p.coordinates), id);
+        }
         private void add(Rectangle r, int id)
         {
             add(r.copy(), id, 1);
