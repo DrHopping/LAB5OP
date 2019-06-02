@@ -125,6 +125,10 @@ namespace LAB5OP
             }
 
         }
+        private int getNextNodeId()
+        {
+            return 1 + highestUsedNodeId++;
+        }
 
         private Node<T> getNode(int index)
         {
