@@ -46,5 +46,23 @@
                 mbr.add(r);
             }
         }
+
+        internal void reorganize(RTree<T> rtree)
+        {
+            int countdownIndex = rtree.maxNodeEntries - 1;
+            for (int index = 0; index < entryCount; index++)
+            {
+                if (entries[index] == null)
+                {
+                    while (entries[countdownIndex] == null && countdownIndex > index)
+                    {
+                        countdownIndex--;
+                    }
+                    entries[index] = entries[countdownIndex];
+                    ids[index] = ids[countdownIndex];
+                    entries[countdownIndex] = null;
+                }
+            }
+        }
     }
 }

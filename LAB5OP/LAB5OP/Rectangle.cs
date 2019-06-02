@@ -71,5 +71,17 @@ namespace LAB5OP
             }
         }
 
+        internal float area()
+        {
+            return (max[0] - min[0]) * (max[1] - min[1]);
+        }
+
+        internal float enlargement(Rectangle r)
+        {
+            float enlargedArea = (Math.Max(max[0], r.max[0]) - Math.Min(min[0], r.min[0])) *
+                                 (Math.Max(max[1], r.max[1]) - Math.Min(min[1], r.min[1]));
+
+            return enlargedArea - area();
+        }
     }
 }
