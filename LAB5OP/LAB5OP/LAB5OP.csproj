@@ -44,9 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cartesian.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="DistanceCalculator.cs" />
     <Compile Include="Node.cs" />
+    <Compile Include="Place.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

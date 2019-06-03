@@ -18,12 +18,12 @@ namespace LAB5OP
         /// <summary>
         /// Calculate the distance between two places.
         /// </summary>
-        public static double DistanceBetweenPlaces(double lat1, double lon1, double lat2, double lon2)
+        public static double DistanceBetweenPlaces(Cartesian c1, Cartesian c2)
         {
-            double dlon = Radians(lon2 - lon1);
-            double dlat = Radians(lat2 - lat1);
+            double dlon = Radians(c2.Longitude - c1.Longitude);
+            double dlat = Radians(c2.Latitude - c1.Latitude);
 
-            double a = (Math.Sin(dlat / 2) * Math.Sin(dlat / 2)) + Math.Cos(Radians(lat1)) * Math.Cos(Radians(lat2)) * (Math.Sin(dlon / 2) * Math.Sin(dlon / 2));
+            double a = (Math.Sin(dlat / 2) * Math.Sin(dlat / 2)) + Math.Cos(Radians(c1.Latitude)) * Math.Cos(Radians(c2.Latitude)) * (Math.Sin(dlon / 2) * Math.Sin(dlon / 2));
             double angle = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             return angle * RADIUS;
         }
