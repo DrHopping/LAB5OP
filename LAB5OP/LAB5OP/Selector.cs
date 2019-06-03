@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace LAB5OP
 {
@@ -11,14 +10,22 @@ namespace LAB5OP
         public Selector(List<Place> places)
         {
             this.Places = places;
-            AddPlacesToTree();
+            addPlacesToTree();
         }
-        private void AddPlacesToTree()
+        private void addPlacesToTree()
         {
             foreach (var place in Places)
             {
                 tree.Add(place.Point, place);
             }
+        }
+        private bool satisfyParameters(Place place, string[] parameters)
+        {
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (place.Info[i] == null || place.Info[i] != parameters[i]) return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -27,12 +34,17 @@ namespace LAB5OP
         /// <param name="point">Center of region</param>
         /// <param name="radius">Radius of region</param>
         /// <param name="parameters">Parameters: type, subtype, name, address</param>
-        /// <returns>Places that satisfy conditions</returns>
+        /// <returns>Places that satisfy parameters</returns>
         public List<Place> SelectNearest(Point point, float radius, params string[] parameters)
         {
             var nearest = tree.Nearest(point, radius);
-            if (parameters.Length > 4) { throw new System.ArgumentException("To many arguments"); }
-            var 
+            var satisfying = new List<Place>();
+            foreach (var place in nearest)
+            {
+                if (satisfyParameters(place, parameters))
+                    satisfying.Add(place);
+            }
+            return satisfying;
         }
     }
 }

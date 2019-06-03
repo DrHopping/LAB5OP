@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace LAB5OP
 {
@@ -23,11 +24,8 @@ namespace LAB5OP
                     var info = line.Split(';');
                     var latitude = float.Parse(info[0]);
                     var longitude = float.Parse(info[1]);
-                    var type = info[2];
-                    var subtype = info[3];
-                    var name = info[4];
-                    var address = info[5];
-                    places.Add(new Place(new Cartesian(latitude, longitude), type, subtype, name, address));
+                    var parameters = info.Skip(2).ToArray();
+                    places.Add(new Place(new Cartesian(latitude, longitude), parameters));
                 }
             }
             return places;
