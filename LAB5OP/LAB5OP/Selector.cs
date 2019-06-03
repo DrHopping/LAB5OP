@@ -35,9 +35,9 @@ namespace LAB5OP
         /// <param name="radius">Radius of region</param>
         /// <param name="parameters">Parameters: type, subtype, name, address</param>
         /// <returns>Places that satisfy parameters</returns>
-        public List<Place> SelectNearest(Point point, float radius, params string[] parameters)
+        public List<Place> SelectNearest(Cartesian cartesian, float radius, params string[] parameters)
         {
-            var nearest = tree.Nearest(point, radius);
+            var nearest = tree.Nearest(Converter.CartesianToSpherical(cartesian), radius);
             var satisfying = new List<Place>();
             foreach (var place in nearest)
             {
