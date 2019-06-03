@@ -55,6 +55,7 @@
     <Compile Include="Reader.cs" />
     <Compile Include="Rectangle.cs" />
     <Compile Include="RTree.cs" />
+    <Compile Include="Selector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
