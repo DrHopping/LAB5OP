@@ -22,7 +22,7 @@ namespace LAB5OP
         public void PrintToFile(string fileName)
         {
             if (!File.Exists(fileName))
-                File.Create(fileName);
+                File.Create(fileName).Close();
 
             using (StreamWriter sw = new StreamWriter(fileName))
             {
