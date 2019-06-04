@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArgsParser.cs" />
     <Compile Include="Cartesian.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="DistanceCalculator.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Rectangle.cs" />
     <Compile Include="RTree.cs" />
     <Compile Include="Selector.cs" />
+    <Compile Include="Writer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

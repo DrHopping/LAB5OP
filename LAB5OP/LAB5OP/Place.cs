@@ -11,5 +11,16 @@
             this.Info = info;
             this.Point = Converter.CartesianToSpherical(cartesian);
         }
+        public string ToString()
+        {
+            string result = "";
+            result += $"{Cartesian.Latitude};{Cartesian.Longitude};";
+            foreach (var data in Info)
+            {
+                if (data == "") break;
+                result += $"{data};";
+            }
+            return result;
+        }
     }
 }

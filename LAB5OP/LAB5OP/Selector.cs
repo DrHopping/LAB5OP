@@ -19,11 +19,11 @@ namespace LAB5OP
                 tree.Add(place.Point, place);
             }
         }
-        private bool satisfyParameters(Place place, string[] parameters)
+        private bool satisfyParameters(Place place, List<string>[] parameters)
         {
             for (int i = 0; i < parameters.Length; i++)
             {
-                if (place.Info[i] == null || place.Info[i] != parameters[i]) return false;
+                if (place.Info[i] == null || !parameters[i].Contains(place.Info[i])) return false;
             }
             return true;
         }
@@ -35,7 +35,7 @@ namespace LAB5OP
         /// <param name="radius">Radius of region</param>
         /// <param name="parameters">Parameters: type, subtype, name, address</param>
         /// <returns>Places that satisfy parameters</returns>
-        public List<Place> SelectNearest(Cartesian cartesian, float radius, params string[] parameters)
+        public List<Place> SelectNearest(Cartesian cartesian, float radius, params List<string>[] parameters)
         {
             var nearest = tree.Nearest(Converter.CartesianToSpherical(cartesian), radius);
             var satisfying = new List<Place>();
