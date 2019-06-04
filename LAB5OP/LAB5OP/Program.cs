@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace LAB5OP
 {
     class Program
-    { 
+    {
         static void ConverterTest()
         {
             //float lat = 51.85035f;
@@ -41,9 +40,16 @@ namespace LAB5OP
         }
         static void Main(string[] args)
         {
-            var list = new Reader("inputTest.txt").GetPlacesList();
-            var selector = new Selector(list);
-            var selected = selector.SelectNearest(new Cartesian(49.06183f, 22.68685f), 100, "tourism", "information", "Malá Ubľa");
+            ArgsParser arguments = new ArgsParser(args);
+            List<Place> list = new Reader(arguments.GetDataBaseName()).GetPlacesList();
+            Selector selector = new Selector(list);
+            Cartesian cartesian = arguments.GetCartesian();
+            float radius = arguments.GetRadius();
+            var parameters = arguments.GetParameters();
+            List<Place> selected = selector.SelectNearest(cartesian,radius,parameters);
+            Writer wr = new Writer(selected);
+            wr.PrintToConsole();
+
             Console.ReadKey();
         }
     }
