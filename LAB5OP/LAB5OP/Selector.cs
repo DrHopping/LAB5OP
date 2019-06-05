@@ -46,5 +46,17 @@ namespace LAB5OP
             }
             return satisfying;
         }
+
+        public Place FindOneNearest(Cartesian cartesian, params List<string>[] parameters)
+        {
+            var goal = new List<Place>();
+            float radius = 0.01f;
+            while(goal.Count == 0)
+            {
+                goal = SelectNearest(cartesian, radius, parameters);
+                radius += 0.01f;
+            }
+            return goal[0];
+        }
     }
 }
